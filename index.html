@@ -38,9 +38,10 @@
         }
 
         #qr-code {
-            display: block;
-            width: 180px;
-            height: 180px;
+            display: block !important;
+            width: 180px !important;
+            height: 180px !important;
+            background: #f0f0f0;
         }
 
         #qr-url {
@@ -91,7 +92,7 @@
 </head>
 <body>
     <div id="qr-container">
-        <canvas id="qr-code"></canvas>
+        <canvas id="qr-code" width="180" height="180"></canvas>
         <div id="qr-url"></div>
     </div>
 
