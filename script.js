@@ -1,3 +1,9 @@
+// GitHub configuration
+const GITHUB_OWNER = 'LAURIDS0';
+const GITHUB_REPO = 'image-display';
+const GITHUB_BRANCH = 'main';
+const IMAGES_FILE = 'images.json';
+
 // Get elements
 const slideshow = document.getElementById('slideshow');
 const slideshowImg = document.getElementById('slideshow-img');
@@ -43,11 +49,19 @@ function generateQRCode() {
     }
 }
 
-// Load images from localStorage
-function loadImages() {
-    const storedImages = localStorage.getItem('uploadedImages');
-    if (storedImages) {
-        images = JSON.parse(storedImages);
+// Load images from GitHub
+async function loadImages() {
+    try {
+        // Try localStorage first (for same device)
+        const localImages = localStorage.getItem('uploadedImages');
+        if (localImages) {
+            images = JSON.parse(localImages);
+        } else {
+            images = [];
+        }
+    } catch (error) {
+        console.error('Error loading images:', error);
+        images = [];
     }
     startSlideshow();
 }
@@ -108,8 +122,8 @@ window.addEventListener('storage', (e) => {
     }
 });
 
-// Reload images periodically to catch updates
-setInterval(loadImages, 2000);
+// Reload images periodically to catch updates from other devices
+setInterval(loadImages, 5000);
 
 // Initialize - wait for QRious library to load
 window.addEventListener('load', () => {

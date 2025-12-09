@@ -89,7 +89,7 @@ function removeFile(index) {
 }
 
 // Upload button click
-uploadBtn.addEventListener('click', () => {
+uploadBtn.addEventListener('click', async () => {
     if (selectedFiles.length === 0) return;
     
     uploadBtn.disabled = true;
@@ -110,17 +110,16 @@ uploadBtn.addEventListener('click', () => {
         });
     });
 
-    Promise.all(promises).then(imageData => {
-        // Get existing images
+    try {
+        const imageData = await Promise.all(promises);
+        
+        // Store in localStorage (will sync across same browser/device)
         const existingImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
-        
-        // Add new images
         const allImages = [...existingImages, ...imageData];
-        
-        // Save to localStorage
         localStorage.setItem('uploadedImages', JSON.stringify(allImages));
         
         // Show success message
+        successMessage.textContent = '✓ Billeder uploadet! Billederne er gemt lokalt på denne enhed.';
         successMessage.classList.add('show');
         uploadBtn.textContent = 'Upload Billeder';
         uploadBtn.disabled = false;
@@ -130,9 +129,14 @@ uploadBtn.addEventListener('click', () => {
         fileInput.value = '';
         displayPreviews();
         
-        // Auto-hide success message after 3 seconds
+        // Auto-hide success message after 5 seconds
         setTimeout(() => {
             successMessage.classList.remove('show');
-        }, 3000);
-    });
+        }, 5000);
+    } catch (error) {
+        console.error('Upload error:', error);
+        alert('Upload fejlede. Prøv igen.');
+        uploadBtn.textContent = 'Upload Billeder';
+        uploadBtn.disabled = false;
+    }
 });
