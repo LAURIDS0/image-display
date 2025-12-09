@@ -86,7 +86,7 @@ function startSlideshow() {
     }
     
     // Change to random image every 15 seconds
-    slideshowInterval = setInterval(showRandomImage, 15000);
+    slideshowInterval = setInterval(showRandomImage, 115000);
 }
 
 // Show random image
