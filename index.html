@@ -23,28 +23,32 @@
             top: 20px;
             right: 20px;
             background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(255, 255, 255, 0.3);
+            z-index: 9999;
+            border: 3px solid #667eea;
         }
 
         /* Hide QR code on mobile devices */
         @media (max-width: 768px) {
             #qr-container {
-                display: none;
+                display: none !important;
             }
         }
 
         #qr-code {
             display: block;
+            width: 180px;
+            height: 180px;
         }
 
         #qr-url {
             text-align: center;
             margin-top: 10px;
-            font-size: 12px;
+            font-size: 13px;
             color: #333;
+            font-weight: bold;
             word-break: break-all;
         }
 

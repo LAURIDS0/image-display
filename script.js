@@ -15,11 +15,14 @@ function generateQRCode() {
     const qr = new QRious({
         element: document.getElementById('qr-code'),
         value: uploadUrl,
-        size: 150,
+        size: 180,
         level: 'H'
     });
 
     document.getElementById('qr-url').textContent = 'Scan for at uploade';
+    
+    // Force display
+    document.getElementById('qr-container').style.display = 'block';
 }
 
 // Load images from localStorage
