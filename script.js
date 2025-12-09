@@ -93,6 +93,11 @@ window.addEventListener('storage', (e) => {
 // Reload images periodically to catch updates
 setInterval(loadImages, 2000);
 
-// Initialize
-generateQRCode();
-loadImages();
+// Initialize - wait for QRious library to load
+window.addEventListener('load', () => {
+    console.log('Page loaded, generating QR code...');
+    setTimeout(() => {
+        generateQRCode();
+        loadImages();
+    }, 100);
+});
