@@ -5,6 +5,9 @@ const previewGrid = document.getElementById('preview-grid');
 const uploadBtn = document.getElementById('upload-btn');
 const successMessage = document.getElementById('success-message');
 
+// API URL
+const API_URL = window.location.origin;
+
 let selectedFiles = [];
 
 // Click to select files
@@ -113,26 +116,36 @@ uploadBtn.addEventListener('click', async () => {
     try {
         const imageData = await Promise.all(promises);
         
-        // Store in localStorage (will sync across same browser/device)
-        const existingImages = JSON.parse(localStorage.getItem('uploadedImages') || '[]');
-        const allImages = [...existingImages, ...imageData];
-        localStorage.setItem('uploadedImages', JSON.stringify(allImages));
+        // Send to server
+        const response = await fetch(`${API_URL}/api/images`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(imageData)
+        });
         
-        // Show success message
-        successMessage.textContent = '✓ Billeder uploadet! Billederne er gemt lokalt på denne enhed.';
-        successMessage.classList.add('show');
-        uploadBtn.textContent = 'Upload Billeder';
-        uploadBtn.disabled = false;
-        
-        // Clear selection
-        selectedFiles = [];
-        fileInput.value = '';
-        displayPreviews();
-        
-        // Auto-hide success message after 5 seconds
-        setTimeout(() => {
-            successMessage.classList.remove('show');
-        }, 5000);
+        if (response.ok) {
+            // Show success message
+            successMessage.textContent = '✓ Billeder uploadet! De vises nu på displayet.';
+            successMessage.classList.add('show');
+            uploadBtn.textContent = 'Upload Billeder';
+            uploadBtn.disabled = false;
+            
+            // Clear selection
+            selectedFiles = [];
+            fileInput.value = '';
+            displayPreviews();
+            
+            // Auto-hide success message after 3 seconds
+            setTimeout(() => {
+                successMessage.classList.remove('show');
+            }, 3000);
+        } else {
+            alert('Upload fejlede. Prøv igen.');
+            uploadBtn.textContent = 'Upload Billeder';
+            uploadBtn.disabled = false;
+        }
     } catch (error) {
         console.error('Upload error:', error);
         alert('Upload fejlede. Prøv igen.');

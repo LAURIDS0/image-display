@@ -1,8 +1,5 @@
-// GitHub configuration
-const GITHUB_OWNER = 'LAURIDS0';
-const GITHUB_REPO = 'image-display';
-const GITHUB_BRANCH = 'main';
-const IMAGES_FILE = 'images.json';
+// API URL - automatically detects if running locally or on Render
+const API_URL = window.location.origin;
 
 // Get elements
 const slideshow = document.getElementById('slideshow');
@@ -49,13 +46,12 @@ function generateQRCode() {
     }
 }
 
-// Load images from GitHub
+// Load images from server
 async function loadImages() {
     try {
-        // Try localStorage first (for same device)
-        const localImages = localStorage.getItem('uploadedImages');
-        if (localImages) {
-            images = JSON.parse(localImages);
+        const response = await fetch(`${API_URL}/api/images`);
+        if (response.ok) {
+            images = await response.json();
         } else {
             images = [];
         }
