@@ -49,9 +49,13 @@ function generateQRCode() {
 // Load images from server
 async function loadImages() {
     try {
-        const response = await fetch(`${API_URL}/api/images`);
+        // Add timestamp to prevent caching
+        const response = await fetch(`${API_URL}/api/images?t=${Date.now()}`, {
+            cache: 'no-store'
+        });
         if (response.ok) {
             images = await response.json();
+            console.log(`Loaded ${images.length} images from server`);
         } else {
             images = [];
         }
