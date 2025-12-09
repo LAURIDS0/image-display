@@ -44,6 +44,18 @@ app.post('/api/images', (req, res) => {
     }
 });
 
+// Update all images (for admin to delete specific ones)
+app.put('/api/images/update', (req, res) => {
+    try {
+        const updatedImages = req.body;
+        fs.writeFileSync(STORAGE_FILE, JSON.stringify(updatedImages));
+        res.json({ success: true, count: updatedImages.length });
+    } catch (error) {
+        console.error('Error updating images:', error);
+        res.status(500).json({ error: 'Failed to update images' });
+    }
+});
+
 // Delete all images
 app.delete('/api/images', (req, res) => {
     try {
