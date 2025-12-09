@@ -29,6 +29,13 @@
             z-index: 1000;
         }
 
+        /* Hide QR code on mobile devices */
+        @media (max-width: 768px) {
+            #qr-container {
+                display: none;
+            }
+        }
+
         #qr-code {
             display: block;
         }
