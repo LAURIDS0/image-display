@@ -9,20 +9,38 @@ let slideshowInterval = null;
 
 // Generate QR code with current URL
 function generateQRCode() {
-    // Use current URL (works both locally and on GitHub Pages)
-    const uploadUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'upload.html';
-    
-    const qr = new QRious({
-        element: document.getElementById('qr-code'),
-        value: uploadUrl,
-        size: 180,
-        level: 'H'
-    });
-
-    document.getElementById('qr-url').textContent = 'Scan for at uploade';
-    
-    // Force display
-    document.getElementById('qr-container').style.display = 'block';
+    try {
+        // Use current URL (works both locally and on GitHub Pages)
+        const uploadUrl = window.location.origin + window.location.pathname.replace('index.html', '') + 'upload.html';
+        
+        console.log('Generating QR code for:', uploadUrl);
+        
+        const canvas = document.getElementById('qr-code');
+        if (!canvas) {
+            console.error('QR code canvas not found!');
+            return;
+        }
+        
+        if (typeof QRious === 'undefined') {
+            console.error('QRious library not loaded!');
+            return;
+        }
+        
+        const qr = new QRious({
+            element: canvas,
+            value: uploadUrl,
+            size: 180,
+            level: 'H'
+        });
+        
+        console.log('QR code generated successfully');
+        document.getElementById('qr-url').textContent = 'Scan for at uploade';
+        
+        // Force display
+        document.getElementById('qr-container').style.display = 'block';
+    } catch (error) {
+        console.error('Error generating QR code:', error);
+    }
 }
 
 // Load images from localStorage
