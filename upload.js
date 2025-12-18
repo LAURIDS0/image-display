@@ -98,36 +98,23 @@ uploadBtn.addEventListener('click', async () => {
     uploadBtn.disabled = true;
     uploadBtn.textContent = 'Uploader...';
     
-    // Read all files and store them
-    const promises = selectedFiles.map(file => {
-        return new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                resolve({
-                    data: e.target.result,
-                    name: file.name,
-                    timestamp: new Date().toISOString()
-                });
-            };
-            reader.readAsDataURL(file);
-        });
-    });
-
     try {
-        const imageData = await Promise.all(promises);
+        // Create FormData and add all files
+        const formData = new FormData();
+        selectedFiles.forEach(file => {
+            formData.append('images', file);
+        });
         
         // Send to server
-        const response = await fetch(`${API_URL}/api/images`, {
+        const response = await fetch(`${API_URL}/api/images/upload`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(imageData)
+            body: formData
         });
         
         if (response.ok) {
+            const result = await response.json();
             // Show success message
-            successMessage.textContent = '✓ Billeder uploadet! De vises nu på displayet.';
+            successMessage.textContent = `✓ ${result.uploaded} billeder uploadet! De vises nu på displayet.`;
             successMessage.classList.add('show');
             uploadBtn.textContent = 'Upload Billeder';
             uploadBtn.disabled = false;

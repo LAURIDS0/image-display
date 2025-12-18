@@ -110,7 +110,7 @@ function showRandomImage() {
     
     // Wait for fade out, then change image and fade in
     setTimeout(() => {
-        slideshowImg.src = images[currentImageIndex].data;
+        slideshowImg.src = API_URL + images[currentImageIndex].url;
         slideshowImg.classList.add('active');
     }, 500);
 }

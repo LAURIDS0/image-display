@@ -59,9 +59,9 @@ function displayImages() {
         card.className = 'image-card';
         
         const image = document.createElement('img');
-        image.src = img.data;
+        image.src = API_URL + img.url;
         image.alt = img.name || `Billede ${index + 1}`;
-        image.onclick = () => openModal(img.data);
+        image.onclick = () => openModal(API_URL + img.url);
         
         const deleteBtn = document.createElement('button');
         deleteBtn.className = 'delete-btn';
